@@ -31,6 +31,28 @@ select CategoryID,CategoryName from Categories;
 -- As yazmak zorunda deðiliz
 select cat.CategoryName from Categories as cat;
 
+-- Aggreage Function
+-- Toplama (sum)
+-- Nortwind databaseinden category tablosundaki CategoryID lerin toplamý
+select sum(cat.CategoryID) as 'CategoryID Toplamý' from [nortwind].[dbo].[Categories] as cat;
+-- Nortwind databaseinden category tablosundaki CategoryID si >5 olan CategoryIDlerin toplamý
+select sum(cat.CategoryID) as 'CategoryID > 5 Olanlarýn Toplamý' from Categories as cat where cat.CategoryID >5;
+-- Minimum  (min)
+-- Nortwind databaseinden category tablosundaki CategoryID si en küçük olan veriyi gösterin
+select min(cat.CategoryID) as 'CategoryID Minimum' from [nortwind].[dbo].[Categories] as cat;
+-- Nortwind databaseinden category tablosundaki CategoryID si >5 olan en küçük olan veriyi gösterin
+select min(cat.CategoryID) as 'CategoryID>5 Minimum' from Categories as cat where cat.CategoryID >5;
+-- Maksimum (max)
+-- Nortwind databaseinden category tablosundaki CategoryID si en büyük olan veriyi gösterin
+select max(cat.CategoryID) as 'CategoryID Maksimum' from [nortwind].[dbo].[Categories] as cat;
+-- orTalama (avg)
+-- Nortwind databaseinden category tablosundaki CategorID lerin ortalamasýný gösterin
+select avg(cat.CategoryID) as 'CategoryID Ortalama' from Categories as cat;
+-- Sayýsý (Count)
+-- Nortwind databaseinden category tablosundaki verilerin sayýsýný gösterin
+select COUNT(cat.CategoryID) as 'CategoryID Sayýsý' from Categories as cat;
+
+
 -- Where koþulu (B-I-L) BETWEEN IN LIKE
 
 select * from Categories as cat where cat.CategoryID>=5;
@@ -88,3 +110,15 @@ select top (4)* from Categories as cat order by cat.CategoryID desc;
 select distinct cat.CategoryName from Categories as cat;
 
 select COUNT( distinct cat.CategoryName) as 'Tekrar etmeyenlerin sayisi' from Categories as cat;
+
+-- IS NULL : Deðeri olmayan
+-- Nortwind databaseinde Categories tablosundaki Picture sütunu(columns) null olanlarý listele
+select * from Categories as cat where cat.Picture is null;
+-- Nortwind databaseinde Categories tablosundaki Picture sütunu(columns) null olan kaç tane veri vardýr
+select COUNT(*) as 'Null olan veri sayýsý' from Categories as cat where cat.Picture is null;
+
+-- IS NOT NULL : Deðeri olan
+-- Nortwind databaseinde Categories tablosundaki Picture sütunu(columns) null olmayanlarý listele
+select * from Categories as cat where cat.Picture is not null;
+-- -- Nortwind databaseinde Categories tablosundaki Picture sütunu(columns) null olmayan kaç tane veri vardýr
+select COUNT(*) as 'Null olmayan veri sayýsý' from Categories as cat where cat.Picture is not null;
