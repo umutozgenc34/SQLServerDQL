@@ -188,3 +188,73 @@ Group by SupplierID
 Having Sum(pro.UnitPrice) >= 80
 Order by Sum(pro.UnitPrice) desc;
 
+
+
+-- Aritmetic , Math
+-- Aritmetik iþlemler
+select 11 + 3 as 'Toplama';
+select 11-3 as 'Çýkarma';
+select 11 * 3 as 'Çarpma';
+select 11 / 3 as 'Bölme';
+select 11 % 3 as 'Mod';
+
+select (stu.vize_notes + stu.final_notes) as 'vize + final sonucu' from [nortwind].[dbo].[Student] as stu;
+select (stu.vize_notes - stu.final_notes) as 'vize - final sonucu' from [nortwind].[dbo].[Student] as stu;
+select (stu.vize_notes * stu.final_notes) as 'vize * final sonucu' from [nortwind].[dbo].[Student] as stu;
+select (stu.vize_notes / stu.final_notes) as 'vize / final sonucu' from [nortwind].[dbo].[Student] as stu;
+select (stu.vize_notes % stu.final_notes) as 'vize % final sonucu' from [nortwind].[dbo].[Student] as stu;
+
+-- Math 
+
+-- Pi
+select PI() as 'pi sayýsý';
+
+--Abs
+
+select ABS(-10) AS 'Mutlak deðer';
+
+--SQRT
+
+select SQRT(25) as 'Karekökü';
+
+-- POWER
+
+select POWER (3,2) as 'Üslü Sayý';
+
+-- SIGN
+
+select SIGN(+10) as 'Ýþaret 1 = Pozitif , -1 = Negatif ,  0 = 0' ;
+select SIGN(-10) as 'Ýþaret 1 = Pozitif , -1 = Negatif ,  0 = 0';
+select SIGN(0) as 'Ýþaret 1 = Pozitif , -1 = Negatif ,  0 = 0';
+
+-- ROUND
+
+select ROUND(1.24563,2) as 'Yuvarlama';
+
+-- CEILING
+
+select CEILING (4.3) as 'Yukarý yuvarlama';
+
+-- FLOOR 
+
+select FLOOR (4.5) as 'Aþaðý Yuvarlama';
+
+-- RANDOM
+
+select RAND() 'Rastgele';
+
+-- SIN,COS,TAN,ATAN,COT => TRIGONOMETRIK FONKSIYONLAR
+
+select SIN(PI()/2) as 'Sinüs';
+select COS(PI()/2) as 'Cosinüs';
+select TAN(PI()/2) as 'Tan';
+select COT(PI()/2) as 'Cot';
+select ATAN(PI()/2) as 'Atan';
+
+-- LOG
+
+select LOG(10) as 'Doðal logaritma';
+select LOG10(100) as 'Taban logaritma';
+
+
+
