@@ -122,3 +122,69 @@ select COUNT(*) as 'Null olan veri sayýsý' from Categories as cat where cat.Pict
 select * from Categories as cat where cat.Picture is not null;
 -- -- Nortwind databaseinde Categories tablosundaki Picture sütunu(columns) null olmayan kaç tane veri vardýr
 select COUNT(*) as 'Null olmayan veri sayýsý' from Categories as cat where cat.Picture is not null;
+
+
+-- categoryname alaný Se ile baþlayan firstname,lastname,username alanlarýný cagýr
+
+select cat.CategoryName,cat.CategoryID from Categories as cat where cat.CategoryName like 'Se%' order by cat.CategoryName;
+
+
+select * from Customers;
+
+select * from Customers as cus where cus.CompanyName like '%un%' order by cus.ContactName desc;
+select * from Customers as cus where cus.CompanyName like 'a%' order by cus.CustomerID asc;
+select * from Customers as cus where cus.City like '%m' order by cus.CustomerID desc;
+
+--select * from Customers as cus where cus.CompanyName ilike 'a%' order by cus.CustomerID asc; MS de calýsmýyo 
+--select * from Customers as cus where cus.City ilike '%m' order by cus.CustomerID desc;
+
+select * from Categories;
+select cat.CategoryName as 'Filtrelenmiþ Kategori isimleri' from [nortwind].[dbo].[Categories] as cat where cat.CategoryID between 3 and 7;
+select * from [nortwind].[dbo].[Categories] as cat where cat.CategoryID >3 and cat.CategoryID < 7;
+select * from [nortwind].[dbo].[Categories] as cat where cat.Picture is not null and cat.CategoryName like 'Co%';
+select * from [nortwind].[dbo].[Categories] as cat where cat.CategoryName like '%me%' and cat.CategoryID >= 3;
+
+select cat.CategoryID as 'or ile filtrelenmiþ veriler' from Categories as cat where cat.CategoryID > 5 or cat.CategoryName like '%d%';
+select CategoryID as 'Id büyükten kücüðe' from Categories as cat where cat.CategoryID >3 and cat.CategoryID <8 order by cat.CategoryID desc;
+
+
+-- Group By
+-- Nortwind Databaseinden [Products] tablosunda ki supplier(tedarikçi) sütununda toplam unitPrice (birim miktarlarý) nelerdir?
+
+select pro.SupplierID, Sum(pro.UnitPrice) as 'Toplam birim miktarý'
+from [nortwind].[dbo].[Products] as pro
+Group by SupplierID;
+
+-- Nortwind Databaseinden [Products] tablosunda ki supplier(tedarikçi) sütununda minimum unitPrice (birim miktarlarý) nelerdir?
+
+select pro.SupplierID, MIN (pro.UnitPrice) as 'Minimum UnitPrice'
+from [nortwind].[dbo].[Products] as pro
+Group by pro.SupplierID;
+
+-- Nortwind Databaseinden [Products] tablosunda ki supplier(tedarikçi) sütununda maksimum unitPrice (birim miktarlarý) nelerdir?
+
+select pro.SupplierID, MAX (pro.UnitPrice) as 'Maksimum UnitPrice'
+from [nortwind].[dbo].[Products] as pro
+Group by pro.SupplierID;
+
+-- Nortwind Databaseinden [Products] tablosunda ki supplier(tedarikçi) sütununda average unitPrice (birim miktarlarý) nelerdir?
+select pro.SupplierID, AVG (pro.UnitPrice) as 'Ortalama UnitPrice'
+from [nortwind].[dbo].[Products] as pro
+Group by pro.SupplierID;
+
+-- Nortwind Databaseinden [Products] tablosunda ki supplier(tedarikçi) sütununda Count unitPrice (birim miktarlarý) nelerdir?
+
+select pro.SupplierID, COUNT (pro.UnitPrice) as 'UnitPrice Sayýsý'
+from [nortwind].[dbo].[Products] as pro
+Group by pro.SupplierID;
+
+--Having
+
+-- Nortwind Databaseinden [Products] tablosunda ki supplier(tedarikçi) sütununda toplam unitPrice (birim miktarlarý) 80 Ve yukarýsýnda olanlarý büyükten küçüðe listele
+
+select pro.SupplierID, Sum(pro.UnitPrice) as 'Toplam birim miktarý'
+from [nortwind].[dbo].[Products] as pro
+Group by SupplierID
+Having Sum(pro.UnitPrice) >= 80
+Order by Sum(pro.UnitPrice) desc;
+
