@@ -256,5 +256,131 @@ select ATAN(PI()/2) as 'Atan';
 select LOG(10) as 'Doðal logaritma';
 select LOG10(100) as 'Taban logaritma';
 
+-- UNION , UNION ALL
+-- !! VERÝ SAYISI VE VE TÜRLERÝ AYNI OLMALIDIR !!
+-- TABLOLARI BÝRLEÞTÝRME
+
+select * from Categories;
+select * from Suppliers;
+
+--UNION
+select sup.SupplierID,sup.CompanyName from Suppliers as sup
+union
+select cat.CategoryID,cat.CategoryName from Categories as cat
+
+--UNION ALL
+select sup.SupplierID,sup.CompanyName from Suppliers as sup
+union all
+select cat.CategoryID,cat.CategoryName from Categories as cat
+-- DATE YYYY-MM-DD
+
+select * from Employees as emp
+-- GET DATE()
+select GETDATE () as 'Þu an ki zaman'
+
+select YEAR(GETDATE()) AS 'Þu an ki yýl';
+
+-- DATEADD()
+
+select DATEADD(DAY,15,'2024-10-8') as 'Yeni gün'
+select DATEADD(DAY,15,GETDATE()) as 'Yeni gün'
+select DATEADD(MONTH,1,'2024-10-8') as 'Yeni AY'
+select DATEADD(YEAR,15,'2024-10-8') as 'Yeni YIL'
+
+-- DATE DIFF
+
+select DATEDIFF(YEAR, '2021-10-8', GETDATE()) AS 'Fark yýlý';
+select DATEDIFF(MONTH, '2021-10-8', GETDATE()) AS 'Fark AYI';
+select DATEDIFF(DAY, '2021-10-8', GETDATE()) AS 'Fark GÜNÜ';
+
+-- SPECIAL DATE
+
+select emp.EmployeeID,emp.FirstName,emp.LastName,emp.BirthDate from Employees as emp where emp.BirthDate = '1948-12-08 00:00:00.000';
+
+-- SADECE BELÝRTÝLEN YIL
+
+select emp.EmployeeID,emp.FirstName,emp.LastName,emp.BirthDate from Employees as emp where YEAR(emp.BirthDate) =YEAR('1963');
 
 
+--STRING 
+
+select * from Categories as cat;
+
+-- LEN (ELEMAN SAYISI)
+
+--Categories tablosundaki CategoryName sütununun harf sayýsý veriniz? 
+
+select cat.CategoryID,cat.CategoryName, LEN(cat.CategoryName) as 'CategoryName sayýsý' from Categories as cat;
+
+--UPPER
+
+-- Categories tablosundaki CategoryName sütununun Büyük harflerle veriniz? 
+
+select cat.CategoryID,cat.CategoryName, UPPER(cat.CategoryName) AS 'Büyük harflerle' from Categories as cat;
+
+-- LOWER 
+
+-- Categories tablosundaki CategoryName sütununun KÜÇÜK harflerle veriniz? 
+
+select cat.CategoryID,cat.CategoryName, LOWER(cat.CategoryName) AS 'Küçük harflerle' from Categories as cat;
+
+--TRIM Saðdan ve soldan boþluklarý al 
+
+-- Categories tablosundaki CategoryName sütununda saðda ve solda boþuklar varsa alýnýz veriniz? 
+
+select cat.CategoryID,cat.CategoryName, TRIM(cat.CategoryName) AS 'Boþuklarý alma ' from Categories as cat;
+
+-- CONCAT
+
+--Categories tablosundaki CategoryName ve Description birleþtirin? 
+
+select CONCAT(cat.CategoryName,',',cat.Description) as 'Birlestir' from Categories as cat;
+
+--REPLACE 
+
+select REPLACE('Sol Göz','Sol', 'Sað');
+
+-- SUBSTRING
+
+select SUBSTRING('Versatil',2,3)
+
+
+-- DML (Data Manipulation Language) --
+
+--INSERT
+--INSERT INTO TabloAdi () Values()
+-- ! INTO Yazmak zorunlu deðil.
+select * from Categories;
+
+INSERT INTO [nortwind].[dbo].[Categories] (CategoryName,Description) values ('Bilgisayarlar','Her türlü bilgisayar');
+INSERT [nortwind].[dbo].[Categories] (CategoryName,Description) values ('Bilgisayarlar2','Her türlü bilgisayar2');
+
+-- UPDATE
+-- UPDATE TabloAdi SET kolonAdi = '' where ID = 1;
+
+UPDATE Categories SET CategoryName = 'Tablet', Description = 'Tablet açýklama' where CategoryID = 10;
+
+-- DELETE
+-- DELETE FROM TabloAdi where ID = 1;
+
+DELETE FROM Categories where CategoryID = 9;
+
+--TRANSACTION
+-- Insert,Delete,Update kullaniyoruz,
+-- Select için kullanmamýza gerek yok
+
+-- 1.YOL
+BEGIN TRANSACTION;
+	INSERT INTO [nortwind].[dbo].[Categories] (CategoryName,Description) values ('Bilgisayarlar','Her türlü bilgisayar');
+	COMMIT; -- BAÞARILIYSA
+	--ROLLBACK; -- BAÞARISIZSA
+
+-- 2. YOL
+-- EÐER BAÞARILIYSA GÜNCELLEME YAPSIN DEÐÝLSE BÜTÜN ÝÞLEMLERÝ GERÝ ALSIN
+BEGIN TRANSACTION;
+BEGIN TRY
+	UPDATE Categories SET CategoryName = 'Tablet', Description = 'Tablet açýklama' where CategoryID = 10;
+END TRY
+BEGIN CATCH
+	ROLLBACK TRANSACTION;
+END CATCH
