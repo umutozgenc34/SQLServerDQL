@@ -384,3 +384,91 @@ END TRY
 BEGIN CATCH
 	ROLLBACK TRANSACTION;
 END CATCH
+
+
+-- TRIGGER 
+-- Trigger (Tetikleyici)
+-- Bir iþlem olduktan sonra veya öncesinde gerçekleþecek iþlemlerdir.
+
+-- Nortwind databaseinden bir veri eklendiðinde Log tablosuna otomatik olarak veri eklensin (Trigger).
+select * from Categories;
+INSERT INTO [nortwind].[dbo].[Categories] (CategoryName,Description) values ('Bilgisayarlar4','Her türlü bilgisayar4');
+
+-- Trigger oluþturma
+CREATE TRIGGER categoriesTableAfterInsertAndLogInsert
+ON Categories -- Tetiklenecek tablo adý
+AFTER INSERT
+AS
+BEGIN
+	INSERT INTO Log (logID,log_name,log_description) values (2,'log_Categories2','Taným log_categories2');
+END;
+
+select * from Log;
+
+
+-- INDEX
+-- Veri tabaný sorgularýnýn performansýný arttýrmak istiyorsak
+-- Bir tablodaki verilere eriþimi hýzlandýrmak için kullanýlan veritabaný nesnesidir
+
+select * from Log;
+-- Log tablosundaki log name sütununa hýzlý bir eriþim saðlamak istiyorsak
+CREATE INDEX idx_logname ON Log(log_name);
+
+
+-- DDL (DATA DEFINITION LANGUAGE) -- 
+
+-- *****DATABASE***********
+-- DATABASE (CREATE)
+CREATE DATABASE denemeDb;
+
+-- DATABASE (DROP)
+DROP DATABASE denemeDb;
+
+USE master;
+GO
+DROP DATABASE denemeDb
+GO
+
+-- DATABASE (RENAME)
+
+EXEC sp_renamedb 'denemeDb' , 'yeniDatabaseDb'
+
+-- ***** TABLE********
+
+use nortwind;
+/*
+INT : TAM SAYI
+PRIMARY KEY : BÝRÝNCÝL ANAHTAR
+IDENTITY : OTOMATÝK ARTIRMAK
+NOT NULL : BOÞ GEÇÝLEMEZ
+UNIQUE : BENZERSÝZ
+DEFAULT : EÐER BÝR ÞEY GÝRÝLMEZSE BENÝM ÝSTEDÝÐÝMÝ GÝREBÝLÝRSÝNÝZ.
+*/
+-- BLOG CATEGORIES(1)
+-- Eðer benim verdiðim tablo adý varsa ekleme yoksa ekle
+if not exists(select * from sysobjects where name='notes'and xtype='U')
+	CREATE TABLE BlogCategories(
+	BlogCategoriesID INT PRIMARY KEY IDENTITY NOT NULL,
+	BlogCategoriesName NVARCHAR(100) UNIQUE,
+	BlogNumber DECIMAL(10,2),
+	CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- INSERT TABLE
+select * from BlogCategories;
+INSERT INTO BlogCategories(BlogCategoriesName,BlogNumber) values('Java',1);
+
+-- BLOG PAGE(N)
+if not exists(select * from sysobjects where name='notes'and xtype='U')
+	CREATE TABLE Blog(
+	BlogID INT PRIMARY KEY IDENTITY NOT NULL, -- PK
+	BlogCategoriesID INT, -- FOREIGN KEY FK
+	Title NVARCHAR(100) UNIQUE,
+	Description NVARCHAR(MAX),
+	CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	
+	CONSTRAINT FK_Blog_Categories FOREIGN KEY(BlogCategoriesID) REFERENCES BlogCategories(BlogCategoriesID)
+);
+
+select * from Blog;
+INSERT INTO Blog(BlogCategoriesID,Title,Description) values(1,'title-1''description-1');
