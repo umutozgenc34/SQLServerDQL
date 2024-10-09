@@ -415,6 +415,21 @@ select * from Log;
 CREATE INDEX idx_logname ON Log(log_name);
 
 
+-- CAST
+-- Bir veriyi baþka bir veriye dönüþtürme iþlemidir.
+--Bir sayýyý stringe çevir
+
+select CAST(12345 as nvarchar(12)) 'Sayýyý stringe çevir' 
+
+--Bir stringi sayýya çevir
+
+select CAST('12345' as int) 'Stringi sayýya çevir' 
+
+-- Tarih ve zaman farklý formatlarda çevir
+
+select CAST('2024-05-11' as datetime) as 'Datetime'
+select CAST('2024-05-11' as date) as 'Date'
+
 -- DDL (DATA DEFINITION LANGUAGE) -- 
 
 -- *****DATABASE***********
@@ -471,4 +486,62 @@ if not exists(select * from sysobjects where name='notes'and xtype='U')
 );
 
 select * from Blog;
-INSERT INTO Blog(BlogCategoriesID,Title,Description) values(1,'title-1''description-1');
+INSERT INTO Blog(BlogCategoriesID,Title,Description) values(1,'title-1','description-1');
+
+-- TRUNCATE
+
+TRUNCATE table Blog;
+
+--JOIN : FK + PK SELECT
+
+-- JOIN(INNER JOIN) **
+
+SELECT
+*
+FROM Blog as blog
+INNER JOIN BlogCategories as cat 
+ON cat.BlogCategoriesID = blog.BlogCategoriesID;
+
+-- JOIN(LEFT JOIN) **
+
+SELECT
+*
+FROM Blog as blog
+LEFT JOIN BlogCategories as cat 
+ON cat.BlogCategoriesID = blog.BlogCategoriesID;
+
+-- JOIN(RIGHT JOIN) **
+
+SELECT
+*
+FROM Blog as blog
+RIGHT JOIN BlogCategories as cat 
+ON cat.BlogCategoriesID = blog.BlogCategoriesID;
+
+-- VIEW 
+-- Sanal bir tablo oluþturmak istediðimizde kullanýrýz
+
+Select * from Blog as blog
+Select * from BlogCategories as cat
+
+SELECT
+blog.BlogID,blog.Title,blog.Description,cat.BlogCategoriesID,cat.BlogCategoriesName
+FROM Blog as blog
+INNER JOIN BlogCategories as cat 
+ON cat.BlogCategoriesID = blog.BlogCategoriesID
+where blog.BlogCategoriesID = 1;
+
+
+-- VIEW ILE SUREKLI KULLANILACAK BIR SORGU HALINE GETÝR
+
+CREATE VIEW BlogAndCategories AS
+SELECT
+blog.BlogID,blog.Title,blog.Description,cat.BlogCategoriesID,cat.BlogCategoriesName
+FROM Blog as blog
+INNER JOIN BlogCategories as cat 
+ON cat.BlogCategoriesID = blog.BlogCategoriesID
+where blog.BlogCategoriesID = 1;
+
+-- VIEW SELECT
+
+select * from BlogAndCategories;
